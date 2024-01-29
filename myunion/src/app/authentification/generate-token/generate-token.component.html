@@ -1,0 +1,18 @@
+<div class="container">
+    <header style="transform: translateY(-30%);">
+			<a href="/"><img src="https://forexkillergang.com/img/logoForex.png" alt="myunion" width="130px" height="130px" style="border-radius: 50%;"/></a>
+		</header>
+    <div id="error" class="alert alert-danger" style="display: none;">{{error.msg}}</div>
+    <form #f="ngForm" (ngSubmit)="generate_token(f)" class="was-validated" novalidate> 
+    <!-- Email input -->
+    <div class="form-outline mb-4">
+      <input type="email" id="email" name="email" class="form-control" placeholder="Email address" [(ngModel)]="user.email" required/>
+    </div>
+  
+    <!-- Submit button -->
+    <div class="row">
+    <button type="submit" class="btn btn-primary btn-block mb-4">Send token
+    </button>
+    </div>
+  </form>
+</div>

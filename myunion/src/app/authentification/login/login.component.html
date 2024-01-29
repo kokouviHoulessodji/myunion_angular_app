@@ -1,0 +1,34 @@
+<div class="container">
+    <header style="transform: translateY(-30%);">
+			<a href="/"><img src="https://forexkillergang.com/img/logoForex.png" alt="myunion" width="130px" height="130px" style="border-radius: 50%;"/></a>
+		</header>
+    <div id="error" class="alert alert-danger" style="display: none;">{{error.msg}}</div>
+    <form #f="ngForm" (ngSubmit)="login(f)" class="was-validated" novalidate> 
+    <!-- Email input -->
+    <div class="form-outline mb-4">
+      <input type="email" id="email" name="email" class="form-control" placeholder="Email address" [(ngModel)]="user.email" required/>
+    </div>
+  
+    <!-- Password input -->
+    <div class="form-outline mb-4">
+      <input type="password" id="password" name="password" class="form-control" placeholder="password" [(ngModel)]="user.password" required/>
+    </div>
+  
+    <!-- 2 column grid layout for inline styling -->
+    <div class="row mb-4">
+  
+      <div class="col">
+        <!-- Simple link -->
+        <a href="/reset_password">Forgot password?</a>
+      </div>
+    </div>
+  
+    <!-- Submit button -->
+    <div class="row">
+    <button [disabled]="f.form.invalid" type="submit" class="btn btn-primary btn-block mb-4">Sign in
+        <span  class="spinner-border text-light sr-only" role="status" hidden></span>
+    </button>
+    </div>
+  </form>
+  <a href="/register">New user? Register here</a>
+</div>

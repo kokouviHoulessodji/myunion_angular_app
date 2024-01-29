@@ -1,0 +1,52 @@
+<div class="container">
+    <header style="transform: translateY(-30%);">
+			<a href="/"><img src="https://forexkillergang.com/img/logoForex.png" alt="myunion" width="130px" height="130px" style="border-radius: 50%;"/></a>
+	</header>
+    <div id="error" class="alert alert-danger" style="display: none;">{{error.msg}}
+        <div class="spinner-border text-success" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+    <form #f="ngForm" (ngSubmit)="register(f)" class="was-validated" novalidate> 
+    <!-- FirstName and lastName inputs -->
+    <div class="form-outline mb-4">
+        <input type="text" id="lastname" name="lastname" class="form-control" placeholder="Lastname" [(ngModel)]="user.lastName" required/>
+    </div>
+
+    <div class="form-outline mb-4">
+        <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Firstname" [(ngModel)]="user.firstName" required/>
+    </div>
+    
+    
+    <!-- Email input -->
+    <div class="form-outline mb-4">
+        <input type="email" id="username" name="email" class="form-control" placeholder="Email address" [(ngModel)]="user.email" required />
+    </div>
+
+    <div class="form-outline mb-4">
+        <input type="text" id="telnumber" name="telnumber" class="form-control" placeholder="Telephone number" [(ngModel)]="user.telnumber" required />
+    </div>
+  
+    <!-- Password input -->
+    <div class="form-outline mb-4">
+      <input type="password" id="password" name="password" class="form-control" placeholder="Password" [(ngModel)]="user.password" required />
+    </div>
+
+    <div class="form-outline mb-4">
+        <input type="password" id="password2" name="password2" class="form-control" placeholder="Confirm password" [(ngModel)]="user.password2" required/>
+    </div>
+  
+    <!-- 2 column grid layout for inline styling -->
+    <div class="row mb-4">
+  
+      <div class="col">
+        <!-- Simple link -->
+        <a href="/login">Sign in here</a>
+      </div>
+    </div>
+  
+    <!-- Submit button -->
+    <button type="submit" [disabled]="f.form.invalid" class="btn btn-primary btn-block mb-4">Sign up</button>
+  
+  </form>
+</div>
