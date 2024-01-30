@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../entity/user';
 import { RegistrationService } from '../../services/registration.service';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { Validators } from '@angular/forms';
+import { PasswordValidators } from '../../password-validators/password-validators';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +24,73 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router){
   }
+  submitted = false;
+  isWorking = false;
+
+  signupForm = new FormGroup(
+    {
+      email: new FormControl(this.user.email, [Validators.email, Validators.required]),
+      password: new FormControl(
+        this.user.password,
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(8),
+          PasswordValidators.patternValidator(new RegExp("(?=.*[0-9])"), {
+            requiresDigit: true
+          }),
+          PasswordValidators.patternValidator(new RegExp("(?=.*[A-Z])"), {
+            requiresUppercase: true
+          }),
+          PasswordValidators.patternValidator(new RegExp("(?=.*[a-z])"), {
+            requiresLowercase: true
+          }),
+          PasswordValidators.patternValidator(new RegExp("(?=.*[$@^!%*?&])"), {
+            requiresSpecialChars: true
+          })
+        ])
+      )
+    }
+  );
+
+  // convenience getter for easy access to form controls
+  get f() {
+    return this.signupForm.controls;
+  }
+
+  get passwordValid() {
+    return this.signupForm.controls["password"].errors === null;
+  }
+
+  get requiredValid() {
+    return !this.signupForm.controls["password"].hasError("required");
+  }
+
+  get minLengthValid() {
+    return !this.signupForm.controls["password"].hasError("minlength");
+  }
+
+  get requiresDigitValid() {
+    return !this.signupForm.controls["password"].hasError("requiresDigit");
+  }
+
+  get requiresUppercaseValid() {
+    return !this.signupForm.controls["password"].hasError("requiresUppercase");
+  }
+
+  get requiresLowercaseValid() {
+    return !this.signupForm.controls["password"].hasError("requiresLowercase");
+  }
+
+  get requiresSpecialCharsValid() {
+    return !this.signupForm.controls["password"].hasError("requiresSpecialChars");
+  }
+
+  setUser(){
+    this.user.email = this.signupForm.get('email').value;
+    this.user.password = this.signupForm.get('password').value;
+  }
+
+
   ngOnInit(): void {
     if(this.authService.isLoggedIn())
       this.router.navigate(['/home']);
@@ -70,37 +139,40 @@ export class LoginComponent implements OnInit {
       }
     }
   }
-  login(f: NgForm) {
-    if(f.valid)
-      {
-        this._service.login(this.user).subscribe(
-          value => {
-            console.log(value);
-            if(value.error === true){
-              this.error.class = 'alert-danger';
-              this.error.msg = value.msg;
-            }
-            else{
-              this.error.class = 'alert-success';
-              this.showOrHideSpinner(this.error.class);
-              this.error.msg = "";
-              this.authService.setToken(value.bearer);
-              setTimeout(()=> {
-                this.router.navigate(['/home']);
-              } , 2500);
-            }
-            
+  login() {
+    this.submitted = true;
+
+    if (this.signupForm.invalid) {
+      this.error.class = 'alert-danger';
+      this.error.msg = 'All inputs are required';
+      this.showOrHideSpinner(this.error.class);
+      this.displayError()
+    }
+    else
+    {
+      this.setUser();
+      this._service.login(this.user).subscribe(
+        value => {
+          console.log(value);
+          if(value.error === true){
+            this.error.class = 'alert-danger';
+            this.error.msg = value.msg;
+          }
+          else{
+            this.error.class = 'alert-success';
             this.showOrHideSpinner(this.error.class);
-            this.displayError();
-          },
-        );
-      }
-      else{
-        this.error.class = 'alert-danger';
-        this.error.msg = 'All inputs are required';
-        this.showOrHideSpinner(this.error.class);
-        this.displayError()
-      }
+            this.error.msg = "";
+            this.authService.setToken(value.bearer);
+            setTimeout(()=> {
+              this.router.navigate(['/home']);
+            } , 2500);
+          }
+          
+          this.showOrHideSpinner(this.error.class);
+          this.displayError();
+        },
+      );
+    }
   }
   displayError(){
     

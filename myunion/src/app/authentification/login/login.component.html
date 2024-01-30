@@ -1,34 +1,51 @@
-<div class="container">
-    <header style="transform: translateY(-30%);">
-			<a href="/"><img src="https://forexkillergang.com/img/logoForex.png" alt="myunion" width="130px" height="130px" style="border-radius: 50%;"/></a>
-		</header>
-    <div id="error" class="alert alert-danger" style="display: none;">{{error.msg}}</div>
-    <form #f="ngForm" (ngSubmit)="login(f)" class="was-validated" novalidate> 
-    <!-- Email input -->
-    <div class="form-outline mb-4">
-      <input type="email" id="email" name="email" class="form-control" placeholder="Email address" [(ngModel)]="user.email" required/>
-    </div>
-  
-    <!-- Password input -->
-    <div class="form-outline mb-4">
-      <input type="password" id="password" name="password" class="form-control" placeholder="password" [(ngModel)]="user.password" required/>
-    </div>
-  
-    <!-- 2 column grid layout for inline styling -->
-    <div class="row mb-4">
-  
-      <div class="col">
-        <!-- Simple link -->
-        <a href="/reset_password">Forgot password?</a>
+<section class="vh-100">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+          class="img-fluid" alt="Sample image">
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <header>
+          <!--<a href="/home"><img src="https://forexkillergang.com/img/logoForex.png" alt="myunion" width="130px" height="130px" style="border-radius: 50%;"/></a>-->
+          <h1 style="font-size: 35px; font-weight: 600;">Connectez-vous</h1>
+        </header>
+        <div id="error" class="alert alert-danger" style="display: none;">{{error.msg}}</div>
+        <form [formGroup]="signupForm" (ngSubmit)="login()" novalidate autocomplete="off">
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+            <input type="email" id="email" name="email" formControlName="email" class="form-control" placeholder="Adresse email" [ngClass]="{ 'is-valid': (f.email.dirty || submitted) && !f.email.errors, 'is-invalid': (f.email.dirty || submitted) && f.email.errors }" />
+            <div *ngIf="f.email.invalid && f.email.touched" class="invalid-feedback">
+                <span class="text-danger" *ngIf="f.email.errors?.['required']">Adresse email obligatoire</span>
+                <span class="text-danger" *ngIf="f.email.errors?.['email']">Adresse email non valide</span>
+            </div>
+          </div>
+
+          <!-- Password input -->
+          <div class="form-outline mb-3">
+            <input type="password" id="password" formControlName="password" name="password" class="form-control" placeholder="Mot de passe" required/>
+            <div
+                class="alert alert-danger"
+                *ngIf="f.password.invalid && f.password.touched"
+              >
+                Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule et un caractère spécial ($, &#64;, ^, !, %, *, ? ou &)
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center">
+            <a href="/reset_password" class="text-body">Mot de passe oublié?</a>
+          </div>
+
+          <div class="text-center text-lg-start mt-4 pt-2">
+            <button [disabled]="signupForm.invalid" type="submit" class="btn btn-primary btn-block mb-4">Se connecter
+              <span  class="spinner-border text-light sr-only" role="status" hidden></span>
+          </button>
+            <p class="small fw-bold mt-2 pt-1 mb-0">Pas encore de compte? <a href="/register"
+                class="link-danger">Créer un compte ici</a></p>
+          </div>
+
+        </form>
       </div>
     </div>
-  
-    <!-- Submit button -->
-    <div class="row">
-    <button [disabled]="f.form.invalid" type="submit" class="btn btn-primary btn-block mb-4">Sign in
-        <span  class="spinner-border text-light sr-only" role="status" hidden></span>
-    </button>
-    </div>
-  </form>
-  <a href="/register">New user? Register here</a>
-</div>
+  </div>
+</section>

@@ -27,7 +27,7 @@ export class ConfirmComponent implements OnInit {
         (value) => {
           if(value.error === false)
             setTimeout(()=>{
-              document.location.href = '/signin?checked='+value.msg
+              document.location.href = '/login?checked='+value.msg
             }, 1000);
           else
             setTimeout(()=>{
